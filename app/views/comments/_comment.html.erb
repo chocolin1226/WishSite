@@ -1,0 +1,5 @@
+
+<li id="<%= dom_id(comment) %>">
+  <%= comment.content %>
+  <%= link_to "刪", comment_path(comment), method: "delete", data: {confirm: "確認刪除?", remote: true} %>
+</li>

@@ -7,6 +7,7 @@ class UsersController < ApplicationController
       @user = User.new(user_params)
   
       if @user.save
+        session[:user] = @user.id
         redirect_to root_path, notice: "註冊成功"
       else
         render :new

@@ -21,6 +21,8 @@ class WishListsController < ApplicationController
   end
 
   def show
+    @comment = Comment.new
+    @comments = @wish_list.comments.order(id: :desc)
   end
 
   def edit
@@ -42,7 +44,6 @@ class WishListsController < ApplicationController
   private
   def find_wish_list
     @wish_list = current_user.wish_lists.find(params[:id])
-    # @wish_list = WishLists.find_by!(id: params[:id], user_id: current_user.id)
   end
 
   def wish_list_params
