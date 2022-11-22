@@ -4,14 +4,16 @@
       <%= @wish_list.title %>
       <button data-controller="favorite-btn"
               data-action="click->favorite-btn#toggle"
-      >
-        <span data-favorite-btn-target="text">NO</span>
+              data-id="<%= @wish_list.id %>"
+              data-liked="<%= @wish_list.liked_by?(current_user) %>"
+              >
+        <i class="fa-regular fa-thumbs-up"
+           data-favorite-btn-target="icon"></i>
       </button>
     </h1>
-
   </header>
-  <article>
-    <%= simple_format(@wish_list.description) %>
+  <article data-controller="markdown">
+    <%= @wish_list.description %>
   </article>
 
   <%= form_with(model: @comment, url: wish_list_comments_path(@wish_list), local: false) do |f| %>
@@ -26,3 +28,6 @@
     <%= render @comments %>
   </ul>
 </section>
+
+<script>
+</script>
