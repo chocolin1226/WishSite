@@ -1,6 +1,6 @@
 class WishListsController < ApplicationController
   before_action :authenticate_user!
-  before_action :find_wish_list, only: [:edit, :update, :destroy, :show, :like]
+  before_action :find_wish_list, only: [:edit, :update, :destroy, :show, :like, :buy, :checkout]
 
   def index
     @wish_lists = current_user.wish_lists
@@ -45,12 +45,15 @@ class WishListsController < ApplicationController
     if @wish_list.liked_by?(current_user)
       # 移除 like
       current_user.liked_wish_lists.delete(@wish_list)
-      render json: {status: "unliked", id: @wish_list.id}
+      render json: {status: "unliked"}
     else
       # 新增 like
-      current_user.liked_wish_lists << (@wish_list)
-      render json: {status: "liked", id: @wish_list.id}
+      current_user.liked_wish_lists << @wish_list
+      render json: {status: "liked"}
     end
+  end
+
+  def buy
   end
 
   private
@@ -60,6 +63,6 @@ class WishListsController < ApplicationController
   end
 
   def wish_list_params
-    params.require(:wish_list).permit(:title, :description, :publish_date)
+    params.require(:wish_list).permit(:title, :description, :publish_date, :amount)
   end
 end

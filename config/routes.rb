@@ -10,10 +10,18 @@ Rails.application.routes.draw do
 
   resource :session, only: [:create, :destroy]
 
+  resources :orders, only: [:create] do
+    member do
+      get :checkout
+    end
+  end
+
   resources :wish_lists do
     member do
       patch :like
+      get :buy
     end
+
     resources :comments, shallow: true, only: [:create, :destroy]
   end
 
