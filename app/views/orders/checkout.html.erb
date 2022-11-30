@@ -1,20 +1,15 @@
 <h1>結帳</h1>
 
-<%= form_with(url: pay_order_path(id: @order.serial),
-              method: "post",
-              data: {
-                controller: "paypal-dropin",
-                token: @token
-              }) do |f| %>
-<% end %>
+
+wish_list:<%= @wish_list.title %><br>
+quantity:<%= @order.quantity %><br>
+amount:<%= @order.amount %><br>
 
 <form method=post action="https://ccore.newebpay.com/MPG/mpg_gateway">
-MID: <input name="MerchantID" value="<%= @form_info[:MerchantID] %>" readonly><br>
-Version: <input name="Version" value="<%= @form_info[:Version] %>" readonly><br>
-TradeInfo:
-<input name="TradeInfo" value="<%= @form_info[:TradeInfo] %>" readonly><br>
-TradeSha:
-<input name="TradeSha" value="<%= @form_info[:TradeSha] %>" readonly><br>
-Amt: <input name="Amt" value="<%= @order.amount.to_i %>" readonly><br>
-<input type=submit value='Submit'>
+  <input type="hidden" name="MerchantID" value="<%= @form_info[:MerchantID] %>" readonly>
+  <input type="hidden" name="Version" value="<%= @form_info[:Version] %>" readonly>
+  <input type="hidden" name="TradeInfo" value="<%= @form_info[:TradeInfo] %>" readonly>
+  <input type="hidden" name="TradeSha" value="<%= @form_info[:TradeSha] %>" readonly>
+  <input type="hidden" name="Amt" value="<%= @order.amount.to_i %>" readonly>
+  <input type=submit value='付款'>
 </form>

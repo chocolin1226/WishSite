@@ -64,5 +64,6 @@ module Newebpay
         encode_string = "HashKey=#{key}&#{trade_info}&HashIV=#{iv}"
         Digest::SHA256.hexdigest(encode_string).upcase
       end
+
     end
   end

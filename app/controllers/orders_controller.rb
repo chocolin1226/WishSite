@@ -24,8 +24,8 @@ class OrdersController < ApplicationController
 
   def checkout
     @order = Order.find_by!(serial: params[:id])
+    @wish_list = WishList.find(@order[:wish_list_id])
     @form_info = Newebpay::Mpg.new(@order).form_info
-    # @token = gateway.client_token.generate
   end
 
   def pay
@@ -49,14 +49,4 @@ class OrdersController < ApplicationController
   def find_wish_list
     @wish_list = WishList.find(params[:wish_list_id])
   end
-
-  def gateway
-    Braintree::Gateway.new(
-      environment: :sandbox,
-      merchant_id: ENV.fetch('BRAINTREE_MERCHANT_ID', nil),
-      public_key: ENV.fetch('BRAINTREE_PUBLIC_KEY', nil),
-      private_key: ENV.fetch('BRAINTREE_PRIVATE_KEY', nil)
-    )
-  end
-
 end
