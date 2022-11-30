@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 class OrdersController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:pay]
   before_action :find_wish_list, only: [:create]
+  skip_before_action :verify_authenticity_token, only: [:pay]
 
   def create
     quantity = params[:quantity].to_i
@@ -23,20 +24,17 @@ class OrdersController < ApplicationController
 
   def checkout
     @order = Order.find_by!(serial: params[:id])
-    @token = gateway.client_token.generate
+    @form_info = Newebpay::Mpg.new(@order).form_info
+    # @token = gateway.client_token.generate
   end
 
   def pay
     order = Order.find_by!(serial: params[:id])
-
     if order.may_pay?
-      result = gateway.transaction.sale(
-        amount: order.amount,
-        payment_method_nonce: params[:nonce]
-      )
-
+      result = Newebpay::MpgResponse.new(params[:TradeInfo])
       if result.success?
-        order.pay!
+        order.pay! 
+        session[:user] = order[:user_id]       
         redirect_to root_path, notice: '付款成功'
       else
         redirect_to root_path, alert: '付款發生問題'
@@ -60,4 +58,5 @@ class OrdersController < ApplicationController
       private_key: ENV.fetch('BRAINTREE_PRIVATE_KEY', nil)
     )
   end
+
 end
