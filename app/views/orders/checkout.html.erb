@@ -5,7 +5,7 @@ wish_list:<%= @wish_list.title %><br>
 quantity:<%= @order.quantity %><br>
 amount:<%= @order.amount %><br>
 
-<form method=post action="https://ccore.newebpay.com/MPG/mpg_gateway">
+<form method=post action="https://ccore.spgateway.com/MPG/mpg_gateway">
   <input type="hidden" name="MerchantID" value="<%= @form_info[:MerchantID] %>" readonly>
   <input type="hidden" name="Version" value="<%= @form_info[:Version] %>" readonly>
   <input type="hidden" name="TradeInfo" value="<%= @form_info[:TradeInfo] %>" readonly>
